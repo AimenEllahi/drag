@@ -18,27 +18,9 @@ export default function Scene() {
         <Environment preset='apartment' />
         <DragControls />
         <group ref={groupRef}>
-          <Draggable
-            position={[0, 2, 0]}
-            onDrag={handleDrag}
-            onDrop={handleDrop}
-            color='#B2C8BA'
-            args={[1, 1, 2]}
-          />
-          <Draggable
-            position={[2, 2, 0]}
-            onDrag={handleDrag}
-            onDrop={handleDrop}
-            color='green'
-            args={[1, 1, 2]}
-          />
-          <Draggable
-            position={[-4, 2, 0]}
-            onDrag={handleDrag}
-            onDrop={handleDrop}
-            color='green'
-            args={[1, 1, 2]}
-          />
+          <Draggable position={[0, 2, 0]} color='#B2C8BA' args={[1, 1, 2]} />
+          <Draggable position={[2, 2, 0]} color='green' args={[1, 1, 2]} />
+          <Draggable position={[-4, 2, 0]} color='green' args={[1, 1, 2]} />
         </group>
       </Canvas>
     </div>

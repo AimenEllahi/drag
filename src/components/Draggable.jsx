@@ -15,7 +15,7 @@ const generateConnectionPoints = (size) => {
   ];
 };
 
-const Draggable = ({ position, color, onDrag, onDrop, args }) => {
+const Draggable = ({ position, color, args }) => {
   const meshRef = useRef();
   const { camera, gl } = useThree();
   const [con, setCon] = React.useState(true);
