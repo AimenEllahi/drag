@@ -14,6 +14,7 @@ export default function Controls() {
       //   console.log("dragging");
       //   //get object being dragged
       //   console.log(event.object);
+      camera.layers.enable(3);
     });
 
     controls.addEventListener("dragend", (event) => {
@@ -50,6 +51,7 @@ export default function Controls() {
             });
           });
         });
+      camera.layers.disable(3);
     });
 
     return () => {

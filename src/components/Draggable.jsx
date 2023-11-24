@@ -2,45 +2,62 @@
 import React, { useRef, useEffect } from "react";
 import { useThree } from "@react-three/fiber";
 import { DragControls } from "three/examples/jsm/controls/DragControls";
+import { PivotControls } from "@react-three/drei";
 
-const generateConnectionPoints = (size) => {
-  const halfSize = size / 2;
+const generateConnectionPoints = (dimensions) => {
+  const halfWidth = dimensions[0] / 2;
+  const halfHeight = dimensions[1] / 2;
+  const halfDepth = dimensions[2] / 2;
+
   return [
-    { position: [halfSize, 0, 0] }, // Right face
-    { position: [-halfSize, 0, 0] }, // Left face
-    { position: [0, halfSize, 0] }, // Top face
-    { position: [0, -halfSize, 0] }, // Bottom face
-    { position: [0, 0, halfSize] }, // Front face
-    { position: [0, 0, -halfSize] }, // Back face
+    { position: [halfWidth, 0, 0] }, // Right face
+    { position: [-halfWidth, 0, 0] }, // Left face
+    { position: [0, halfHeight, 0] }, // Top face
+    { position: [0, -halfHeight, 0] }, // Bottom face
+    { position: [0, 0, halfDepth] }, // Front face
+    { position: [0, 0, -halfDepth] }, // Back face
   ];
 };
 
-const Draggable = ({ position, color, args }) => {
+const Draggable = ({ position, color, dimensions }) => {
   const meshRef = useRef();
   const { camera, gl } = useThree();
   const [con, setCon] = React.useState(true);
 
-  const connectionPoints = generateConnectionPoints(args[0]);
+  const connectionPoints = generateConnectionPoints(dimensions);
 
   return (
-    <mesh ref={meshRef} position={position}>
-      <boxGeometry args={args} />
-      <meshStandardMaterial color={color} />
-      <group name='connection points'>
-        {connectionPoints.map((point, index) => (
-          <mesh
-            name='connection'
-            key={index}
-            position={point.position}
-            visible={con}
-          >
-            {/* Connection point geometry */}
-            <sphereGeometry args={[0.1, 32, 32]} />
-            <meshStandardMaterial color='#0F0F0F' />
-          </mesh>
-        ))}
-      </group>
-    </mesh>
+    <group>
+      <PivotControls
+        rotation={[0, -Math.PI / 2, 0]}
+        anchor={[1, -1, -1]}
+        scale={75}
+        depthTest={false}
+        fixed
+        lineWidth={2}
+      >
+        <mesh ref={meshRef} position={position}>
+          <boxGeometry args={dimensions} />
+          <meshStandardMaterial color={color} receiveShadow castShadow />
+
+          <group name="connection points">
+            {connectionPoints.map((point, index) => (
+              <mesh
+                name="connection"
+                key={index}
+                position={point.position}
+                visible={con}
+                layers={3}
+              >
+                {/* Connection point geometry */}
+                <sphereGeometry args={[0.1, 32, 32]} />
+                <meshStandardMaterial color="#0F0F0F" />
+              </mesh>
+            ))}
+          </group>
+        </mesh>
+      </PivotControls>
+    </group>
   );
 };
 
