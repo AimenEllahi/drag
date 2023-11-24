@@ -3,7 +3,7 @@ import { DragControls } from "three/examples/jsm/controls/DragControls";
 import { useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
-export default function Controls() {
+export default function Controls({ setIsDragging }) {
   const { camera, scene, gl } = useThree();
 
   useEffect(() => {
@@ -15,6 +15,7 @@ export default function Controls() {
       //   //get object being dragged
       //   console.log(event.object);
       camera.layers.enable(3);
+      setIsDragging(true);
     });
 
     controls.addEventListener("dragend", (event) => {
@@ -52,6 +53,7 @@ export default function Controls() {
           });
         });
       camera.layers.disable(3);
+      setIsDragging(false);
     });
 
     return () => {

@@ -27,37 +27,26 @@ const Draggable = ({ position, color, dimensions }) => {
   const connectionPoints = generateConnectionPoints(dimensions);
 
   return (
-    <group>
-      <PivotControls
-        rotation={[0, -Math.PI / 2, 0]}
-        anchor={[1, -1, -1]}
-        scale={75}
-        depthTest={false}
-        fixed
-        lineWidth={2}
-      >
-        <mesh ref={meshRef} position={position}>
-          <boxGeometry args={dimensions} />
-          <meshStandardMaterial color={color} receiveShadow castShadow />
+    <mesh ref={meshRef} position={position}>
+      <boxGeometry args={dimensions} />
+      <meshStandardMaterial color={color} receiveShadow castShadow />
 
-          <group name="connection points">
-            {connectionPoints.map((point, index) => (
-              <mesh
-                name="connection"
-                key={index}
-                position={point.position}
-                visible={con}
-                layers={3}
-              >
-                {/* Connection point geometry */}
-                <sphereGeometry args={[0.1, 32, 32]} />
-                <meshStandardMaterial color="#0F0F0F" />
-              </mesh>
-            ))}
-          </group>
-        </mesh>
-      </PivotControls>
-    </group>
+      <group name='connection points'>
+        {connectionPoints.map((point, index) => (
+          <mesh
+            name='connection'
+            key={index}
+            position={point.position}
+            visible={con}
+            layers={3}
+          >
+            {/* Connection point geometry */}
+            <sphereGeometry args={[0.1, 32, 32]} />
+            <meshStandardMaterial color='#0F0F0F' />
+          </mesh>
+        ))}
+      </group>
+    </mesh>
   );
 };
 
