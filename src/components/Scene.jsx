@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
 import Draggable from "./Draggable";
-import * as THREE from "three";
 import DragControls from "./DragControls";
 import { Suspense } from "react";
 import Loader from "./Loader";

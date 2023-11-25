@@ -7,13 +7,9 @@ export default function Controls({ setIsDragging }) {
   const { camera, scene, gl } = useThree();
 
   useEffect(() => {
-    // console.log(scene.children);
     const controls = new DragControls(scene.children, camera, gl.domElement);
 
     controls.addEventListener("dragstart", (event) => {
-      //   console.log("dragging");
-      //   //get object being dragged
-      //   console.log(event.object);
       camera.layers.enable(3);
       setIsDragging(true);
     });

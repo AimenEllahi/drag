@@ -1,8 +1,5 @@
 // Draggable.js
-import React, { useRef, useEffect } from "react";
-import { useThree } from "@react-three/fiber";
-import { DragControls } from "three/examples/jsm/controls/DragControls";
-import { PivotControls } from "@react-three/drei";
+import React, { useRef } from "react";
 
 const generateConnectionPoints = (dimensions) => {
   const halfWidth = dimensions[0] / 2;
@@ -21,7 +18,7 @@ const generateConnectionPoints = (dimensions) => {
 
 const Draggable = ({ position, color, dimensions }) => {
   const meshRef = useRef();
-  const { camera, gl } = useThree();
+
   const [con, setCon] = React.useState(true);
 
   const connectionPoints = generateConnectionPoints(dimensions);
