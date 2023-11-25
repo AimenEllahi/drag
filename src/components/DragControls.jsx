@@ -14,6 +14,11 @@ export default function Controls({ setIsDragging }) {
       setIsDragging(true);
     });
 
+    controls.addEventListener("drag", (event) => {
+      //limit y axis
+      event.object.position.y = 0;
+    });
+
     controls.addEventListener("dragend", (event) => {
       const selectedObjectPoints = event.object.children[0].children.map(
         (connPoint) => connPoint
