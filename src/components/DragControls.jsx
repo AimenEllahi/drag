@@ -1,23 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { DragControls } from "three/examples/jsm/controls/DragControls";
 import { useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
-export default function Controls({ setIsDragging }) {
+export default function Controls({ setIsDragging, isAddObjectMode }) {
   const { camera, scene, gl } = useThree();
+  const controlsRef = useRef(null);
 
   useEffect(() => {
+    console.log("here");
     const controls = new DragControls(scene.children, camera, gl.domElement);
-
+    controlsRef.current = controls;
     controls.addEventListener("dragstart", (event) => {
       camera.layers.enable(3);
-
+      console.log("dragStart");
       setIsDragging(true);
     });
 
     controls.addEventListener("drag", (event) => {
+      //console.log(event.object);
       //limit y axis
-
       event.object.position.y = 0;
     });
 
@@ -27,6 +29,7 @@ export default function Controls({ setIsDragging }) {
         !event.object.children ||
         !event.object.children[0]
       ) {
+        // console.log("no object");
         return;
       }
 
@@ -34,7 +37,7 @@ export default function Controls({ setIsDragging }) {
         (connPoint) => connPoint
       );
 
-      scene.children[4].children
+      scene.children[5].children
         .filter((object) => object.uuid !== event.object.uuid)
         .forEach((object) => {
           object.children[0].children.forEach((connPoint) => {
@@ -44,7 +47,7 @@ export default function Controls({ setIsDragging }) {
               const d = new THREE.Vector3();
               connPoint.getWorldPosition(d);
               sConnPoint.getWorldPosition(s);
-              if (s.distanceTo(d) < 0.4) {
+              if (s.distanceTo(d) < 1) {
                 // Position difference between connection points in WORLD coords
                 // Move object that difference
                 const differenceWorld = new THREE.Vector3().subVectors(d, s);
@@ -64,7 +67,9 @@ export default function Controls({ setIsDragging }) {
           });
         });
       camera.layers.disable(3);
+
       setIsDragging(false);
+      console.log("dragEnd");
     });
 
     return () => {
