@@ -1,6 +1,7 @@
 // Draggable.js
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { Text, Html } from "@react-three/drei";
+import { FaTrashCan } from "react-icons/fa6";
 
 const generateConnectionPoints = (dimensions) => {
   const halfWidth = dimensions[0] / 2;
@@ -29,6 +30,24 @@ const Draggable = ({ position, color, dimensions, onDelete }) => {
     onDelete();
   };
 
+  const iconPosition = [
+    dimensions[0] / 2,
+    dimensions[1] / 2,
+    dimensions[2] / 2,
+  ];
+
+  useEffect(() => {
+    meshRef.current.geometry.computeBoundingBox();
+    const boundingBox = meshRef.current.geometry.boundingBox;
+
+    // Adjust icon position based on the bounding box
+    if (boundingBox) {
+      iconPosition[0] += boundingBox.max.x;
+      iconPosition[1] += boundingBox.max.y;
+      iconPosition[2] += boundingBox.max.z;
+    }
+  }, [dimensions]);
+
   return (
     <mesh ref={meshRef} position={position}>
       <boxGeometry args={dimensions} />
@@ -49,16 +68,16 @@ const Draggable = ({ position, color, dimensions, onDelete }) => {
           </mesh>
         ))}
       </group>
-      <Html position={[dimensions[0] / 2 + 0.2, dimensions[1] / 2 + 0.6, 0]}>
+      <Html position={iconPosition}>
         <div
           style={{
-            color: "gray",
+            color: "red",
             cursor: "pointer",
             zIndex: 1,
           }}
           onClick={handleXClick}
         >
-          x
+          <FaTrashCan size={20} />
         </div>
       </Html>
     </mesh>

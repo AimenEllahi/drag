@@ -8,9 +8,9 @@ const Selector = ({ selectedModel, setSelectedModel, setIsAddObjectMode }) => {
   };
 
   return (
-    <div className='absolute bottom-0 w-screen h-[20vh]'>
+    <div className="absolute bottom-0 w-screen h-[20vh]">
       <div
-        className='w-full h-full items-center'
+        className="w-full h-full items-center"
         style={{ display: "flex", justifyContent: "space-around" }}
       >
         {modelList.map((model, index) => (
