@@ -1,5 +1,6 @@
 // Draggable.js
 import React, { useRef } from "react";
+import { Text, Html } from "@react-three/drei";
 
 const generateConnectionPoints = (dimensions) => {
   const halfWidth = dimensions[0] / 2;
@@ -16,22 +17,27 @@ const generateConnectionPoints = (dimensions) => {
   ];
 };
 
-const Draggable = ({ position, color, dimensions }) => {
+const Draggable = ({ position, color, dimensions, onDelete }) => {
   const meshRef = useRef();
 
   const [con, setCon] = React.useState(true);
 
   const connectionPoints = generateConnectionPoints(dimensions);
 
+  const handleXClick = (event) => {
+    event.stopPropagation();
+    onDelete();
+  };
+
   return (
     <mesh ref={meshRef} position={position}>
       <boxGeometry args={dimensions} />
       <meshStandardMaterial color={color} receiveShadow castShadow />
 
-      <group name='connection points'>
+      <group name="connection points">
         {connectionPoints.map((point, index) => (
           <mesh
-            name='connection'
+            name="connection"
             key={index}
             position={point.position}
             visible={con}
@@ -39,10 +45,22 @@ const Draggable = ({ position, color, dimensions }) => {
           >
             {/* Connection point geometry */}
             <sphereGeometry args={[0.1, 32, 32]} />
-            <meshStandardMaterial color='#0F0F0F' />
+            <meshStandardMaterial color="#0F0F0F" />
           </mesh>
         ))}
       </group>
+      <Html position={[dimensions[0] / 2 + 0.2, dimensions[1] / 2 + 0.6, 0]}>
+        <div
+          style={{
+            color: "gray",
+            cursor: "pointer",
+            zIndex: 1,
+          }}
+          onClick={handleXClick}
+        >
+          x
+        </div>
+      </Html>
     </mesh>
   );
 };

@@ -11,15 +11,25 @@ export default function Controls({ setIsDragging }) {
 
     controls.addEventListener("dragstart", (event) => {
       camera.layers.enable(3);
+
       setIsDragging(true);
     });
 
     controls.addEventListener("drag", (event) => {
       //limit y axis
+
       event.object.position.y = 0;
     });
 
     controls.addEventListener("dragend", (event) => {
+      if (
+        !event.object ||
+        !event.object.children ||
+        !event.object.children[0]
+      ) {
+        return;
+      }
+
       const selectedObjectPoints = event.object.children[0].children.map(
         (connPoint) => connPoint
       );
