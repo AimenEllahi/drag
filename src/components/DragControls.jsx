@@ -12,8 +12,10 @@ export default function Controls({ setIsDragging, isAddObjectMode }) {
     const controls = new DragControls(scene.children, camera, gl.domElement);
     controlsRef.current = controls;
     controls.addEventListener("dragstart", (event) => {
+      if (event.object.name === "plane") return;
       camera.layers.enable(3);
       console.log("dragStart");
+      console.log(event.object.name);
       setIsDragging(true);
     });
 
@@ -27,9 +29,10 @@ export default function Controls({ setIsDragging, isAddObjectMode }) {
       if (
         !event.object ||
         !event.object.children ||
-        !event.object.children[0]
+        !event.object.children[0] ||
+        event.object.name === "plane"
       ) {
-        // console.log("no object");
+        setIsDragging(false);
         return;
       }
 

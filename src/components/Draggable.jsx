@@ -18,7 +18,7 @@ const generateConnectionPoints = (dimensions) => {
   ];
 };
 
-const Draggable = ({ position, color, dimensions, onDelete }) => {
+const Draggable = ({ position, color, dimensions, onDelete, isPreview }) => {
   const meshRef = useRef();
 
   const [con, setCon] = React.useState(true);
@@ -32,8 +32,8 @@ const Draggable = ({ position, color, dimensions, onDelete }) => {
 
   const iconPosition = [
     dimensions[0] / 2,
-    dimensions[1] / 2,
-    dimensions[2] / 2,
+    dimensions[1] / 2 + 0.3,
+    dimensions[2] / 2 - 0.2,
   ];
 
   useEffect(() => {
@@ -53,10 +53,10 @@ const Draggable = ({ position, color, dimensions, onDelete }) => {
       <boxGeometry args={dimensions} />
       <meshStandardMaterial color={color} receiveShadow castShadow />
 
-      <group name="connection points">
+      <group name='connection points'>
         {connectionPoints.map((point, index) => (
           <mesh
-            name="connection"
+            name='connection'
             key={index}
             position={point.position}
             visible={con}
@@ -64,22 +64,24 @@ const Draggable = ({ position, color, dimensions, onDelete }) => {
           >
             {/* Connection point geometry */}
             <sphereGeometry args={[0.1, 32, 32]} />
-            <meshStandardMaterial color="#0F0F0F" />
+            <meshStandardMaterial color='#0F0F0F' />
           </mesh>
         ))}
       </group>
-      <Html position={iconPosition}>
-        <div
-          style={{
-            color: "red",
-            cursor: "pointer",
-            zIndex: 1,
-          }}
-          onClick={handleXClick}
-        >
-          <FaTrashCan size={20} />
-        </div>
-      </Html>
+      {!isPreview && (
+        <Html position={iconPosition}>
+          <div
+            style={{
+              color: "red",
+              cursor: "pointer",
+              zIndex: 1,
+            }}
+            onClick={handleXClick}
+          >
+            <FaTrashCan size={20} />
+          </div>
+        </Html>
+      )}
     </mesh>
   );
 };

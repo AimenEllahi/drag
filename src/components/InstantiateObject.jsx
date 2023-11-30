@@ -3,11 +3,11 @@ import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { Torus, Circle } from "@react-three/drei";
 import { useControls } from "leva";
+import Draggable from "./Draggable";
 
 export default function InstantiateObject({
   isAddObjectMode,
-  handleAddObject,
-  setIsAddObjectMode,
+  selectedModel,
   setMouse,
 }) {
   const { scene, camera } = useThree();
@@ -46,25 +46,29 @@ export default function InstantiateObject({
     }
   });
 
+  useFrame(() => {
+    if (!isAddObjectMode && ref.current && ref.current.visible) {
+      ref.current.visible = false;
+    }
+  });
+
   return (
     <group>
-      <group ref={ref} rotation={[0, 0, 1.6]}>
-        <Torus
-          args={[0.1, 0.02, 2, 100]}
-          rotation={[0, -Math.PI * 0.5, 0]}
-          position={[0, 0.01, 0]}
-          material-color='#5b3cc4'
-        />
-        <Circle
-          args={[0.08, 32]}
-          rotation={[0, -Math.PI * 0.5, 0]}
-          position={[0, 0.01, 0]}
-          material-color='#ffffff'
-          material-transparent
-          opacity={1}
+      <group ref={ref}>
+        <Draggable
+          position={[0, 0, 0]}
+          color={selectedModel.color}
+          dimensions={selectedModel.dimensions}
+          onDelete={() => {}}
+          isPreview={true}
         />
       </group>
-      <mesh visible={false} ref={planeRef} rotation={[-Math.PI * 0.3, 0, 0]}>
+      <mesh
+        name='plane'
+        visible={false}
+        ref={planeRef}
+        rotation={[-Math.PI * 0.3, 0, 0]}
+      >
         <planeGeometry args={[150, 150]} />
         <meshBasicMaterial color='#000000' />
       </mesh>

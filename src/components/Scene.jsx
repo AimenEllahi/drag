@@ -45,6 +45,8 @@ export default function Scene() {
     }
   };
 
+  //console.log(isDragging);
+
   return (
     <div>
       <div
@@ -61,8 +63,7 @@ export default function Scene() {
             castShadow
           />
           <InstantiateObject
-            setIsAddObjectMode={setIsAddObjectMode}
-            handleAddObject={handleAddObject}
+            selectedModel={selectedModel}
             isAddObjectMode={isAddObjectMode}
             setMouse={setMouse}
           />
@@ -78,7 +79,7 @@ export default function Scene() {
           <GizmoHelper alignment='bottom-right' margin={[100, 100]}>
             <GizmoViewport labelColor='white' axisHeadScale={1} />
           </GizmoHelper>
-          {/* <OrbitControls enabled={!isDragging} /> */}
+          <OrbitControls enabled={!isDragging} />
           <DragControls
             isAddObjectMode={isAddObjectMode}
             setIsDragging={setIsDragging}
